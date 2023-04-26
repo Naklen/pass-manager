@@ -10,29 +10,33 @@
 		<local:PassEntryHeightConverter x:Key="PassEntryHeightConverter"/>		
 	</UserControl.Resources>	
 	<DockPanel>
-		<Button DockPanel.Dock="Top">+ Add new entry</Button>		
-		<ListBox Items="{Binding Entries}">
+		<Button DockPanel.Dock="Top">+ Add new entry</Button>
+		<ListBox Items="{Binding Entries}"> 
+			<ListBox.Styles>
+				<Style Selector="ListBoxItem">
+					<Setter Property="Padding" Value="0"/>					
+				</Style>
+			</ListBox.Styles>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Grid RowDefinitions="Auto, Auto" ShowGridLines="True">						
+					<Grid RowDefinitions="Auto,Auto" ShowGridLines="True">					
 						<StackPanel Grid.Row="0" Orientation="Horizontal">
 							<Label Content="{Binding Name}"/>
 							<Button>Copy Pass</Button>
 							<Button IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">Copy Name</Button>
-							<Button>Expand/Collapse</Button>
+							<Button Command="{Binding $parent[UserControl].DataContext.ExpandOrCollapseEntry}" CommandParameter="{Binding Id}">Expand/Collapse</Button>
 						</StackPanel>						
 						<StackPanel Grid.Row="1">
 							<StackPanel.Height>
 								<MultiBinding Converter="{StaticResource PassEntryHeightConverter}">
-									<Binding Path="Id"/>
-									<Binding Path="DataContext.ExpandedId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
-								</MultiBinding>
+										<Binding Path="Id"/>
+										<Binding Path="$parent[UserControl].DataContext.ExpandedId"/>
+									</MultiBinding>
 							</StackPanel.Height>
 							<TextBox Text="{Binding Login}"
 									   IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 							<TextBox Text="{Binding	Pass}"
 									 PasswordChar="•"/>
-							<!--Label Content="{Binding DataContext.ExpandedId, RelativeSource={RelativeSource AncestorType=UserControl}}"/-->
 						</StackPanel>
 					</Grid>
 				</DataTemplate>

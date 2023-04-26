@@ -15,8 +15,7 @@ namespace pm.Converters
                 return AvaloniaProperty.UnsetValue;
             }
 
-            return entryId == expandedId ? 100 : 0;
-            
+            return entryId == expandedId ? "Auto" : 0;  // :(       
         }
     }
 }
