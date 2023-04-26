@@ -1,0 +1,42 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"			 
+			 xmlns:local="clr-namespace:pm.Converters"
+			 xmlns:vm="clr-namespace:pm.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="450"
+             x:Class="pm.Views.PassListView">
+	<UserControl.Resources>
+		<local:PassEntryHeightConverter x:Key="PassEntryHeightConverter"/>		
+	</UserControl.Resources>	
+	<DockPanel>
+		<Button DockPanel.Dock="Top">+ Add new entry</Button>		
+		<ListBox Items="{Binding Entries}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<Grid RowDefinitions="Auto, Auto" ShowGridLines="True">						
+						<StackPanel Grid.Row="0" Orientation="Horizontal">
+							<Label Content="{Binding Name}"/>
+							<Button>Copy Pass</Button>
+							<Button IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">Copy Name</Button>
+							<Button>Expand/Collapse</Button>
+						</StackPanel>						
+						<StackPanel Grid.Row="1">
+							<StackPanel.Height>
+								<MultiBinding Converter="{StaticResource PassEntryHeightConverter}">
+									<Binding Path="Id"/>
+									<Binding Path="DataContext.ExpandedId" RelativeSource="{RelativeSource AncestorType=UserControl}"/>
+								</MultiBinding>
+							</StackPanel.Height>
+							<TextBox Text="{Binding Login}"
+									   IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+							<TextBox Text="{Binding	Pass}"
+									 PasswordChar="•"/>
+							<!--Label Content="{Binding DataContext.ExpandedId, RelativeSource={RelativeSource AncestorType=UserControl}}"/-->
+						</StackPanel>
+					</Grid>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+	</DockPanel>
+</UserControl>

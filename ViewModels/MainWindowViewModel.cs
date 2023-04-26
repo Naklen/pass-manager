@@ -1,6 +1,12 @@
-﻿namespace pm.ViewModels;
+﻿using pm.Services;
+
+namespace pm.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public string Greeting => "Welcome to Avalonia!";
+    public MainWindowViewModel(ArrayDatabase db)
+    {
+        List = new PassListViewModel(db.GetAll());
+    }
+    public PassListViewModel List { get; }
 }
