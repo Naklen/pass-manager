@@ -1,6 +1,7 @@
 ﻿using DynamicData.Binding;
 using pm.Models;
 using ReactiveUI;
+using TextCopy;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace pm.ViewModels
 {
@@ -28,6 +30,10 @@ namespace pm.ViewModels
         void SetExpandedId(int id)
         {
             ExpandedId = ExpandedId == id ? -1 : id;
+        }
+
+        public async void CopyToClipboard(string text) {
+            await ClipboardService.SetTextAsync(text);
         }
     }
 }

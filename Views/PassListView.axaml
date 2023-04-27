@@ -22,8 +22,15 @@
 					<Grid RowDefinitions="Auto,Auto" ShowGridLines="True">					
 						<StackPanel Grid.Row="0" Orientation="Horizontal">
 							<Label Content="{Binding Name}"/>
-							<Button>Copy Pass</Button>
-							<Button IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">Copy Name</Button>
+							<Button Command="{Binding $parent[UserControl].DataContext.CopyToClipboard}"
+									CommandParameter="{Binding Pass}">
+								Copy Pass
+							</Button>
+							<Button IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+									Command="{Binding $parent[UserControl].DataContext.CopyToClipboard}"
+									CommandParameter="{Binding Login}">
+								Copy Login
+							</Button>
 							<Button Command="{Binding $parent[UserControl].DataContext.ExpandOrCollapseEntry}" CommandParameter="{Binding Id}">Expand/Collapse</Button>
 						</StackPanel>						
 						<StackPanel Grid.Row="1">
