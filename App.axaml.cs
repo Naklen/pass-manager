@@ -18,10 +18,10 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var db = new ArrayDatabase();
+            var dbService = new ArrayDatabaseService();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(db),
+                DataContext = new MainWindowViewModel(dbService),
             };
         }
 

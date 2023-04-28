@@ -10,7 +10,7 @@ namespace pm.Converters
     {
         public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (values.Count < 2 || !(values[0] is int entryId) || !(values[1] is int expandedId))
+            if (values.Count < 2 || values[0] is not int entryId || values[1] is not int expandedId)
             {
                 return AvaloniaProperty.UnsetValue;
             }

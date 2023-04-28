@@ -4,9 +4,9 @@ namespace pm.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    public MainWindowViewModel(ArrayDatabase db)
+    public MainWindowViewModel(ArrayDatabaseService dbService)
     {
-        List = new PassListViewModel(db.GetAll());
+        List = new PassListViewModel(dbService);
     }
     public PassListViewModel List { get; }
 }
