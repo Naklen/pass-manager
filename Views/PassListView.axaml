@@ -1,25 +1,34 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"			 
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"			 
 			 xmlns:local="clr-namespace:pm.Converters"
 			 xmlns:vm="clr-namespace:pm.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="450"
-             x:Class="pm.Views.PassListView">
+			 mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="450"
+			 x:Class="pm.Views.PassListView">
 	<UserControl.Resources>
-		<local:PassEntryHeightConverter x:Key="PassEntryHeightConverter"/>		
+		<local:PassEntryHeightConverter x:Key="PassEntryHeightConverter"/>
+		<local:SavePassEntryButtonEnableConverter x:Key="SavePassEntryButtonEnableConverter"/>
 	</UserControl.Resources>	
 	<DockPanel>
-		<Button DockPanel.Dock="Top">+ Add new entry</Button>
-		<ListBox Items="{Binding Entries}"> 
+		<Button DockPanel.Dock="Top" Command="{Binding $parent[Window].DataContext.AddNewEntry}">
+			+ Add new entry
+		</Button>
+		<ListBox Items="{Binding Entries}">
 			<ListBox.Styles>
 				<Style Selector="ListBoxItem">
 					<Setter Property="Padding" Value="0"/>					
 				</Style>
+				<Style Selector="ListBoxItem:selected > ContentPresenter">
+					<Setter Property="Background" Value="Transparent"/>
+				</Style>
+				<Style Selector="ListBoxItem:pointerover > ContentPresenter">
+					<Setter Property="Background" Value="Transparent"/>					
+				</Style>
 			</ListBox.Styles>
 			<ListBox.ItemTemplate>
 				<DataTemplate>
-					<Grid RowDefinitions="Auto,Auto" ShowGridLines="True">					
+					<Grid RowDefinitions="Auto,Auto">					
 						<StackPanel Grid.Row="0" Orientation="Horizontal">
 							<Label Content="{Binding Name}"/>
 							<Button Command="{Binding $parent[UserControl].DataContext.CopyPassToClipboard}"
@@ -33,17 +42,38 @@
 							</Button-->
 							<Button Command="{Binding $parent[UserControl].DataContext.ExpandOrCollapseEntry}" CommandParameter="{Binding Id}">Expand/Collapse</Button>
 						</StackPanel>						
-						<StackPanel Grid.Row="1">
+						<StackPanel Grid.Row="1" Orientation="Horizontal">
 							<StackPanel.Height>
 								<MultiBinding Converter="{StaticResource PassEntryHeightConverter}">
 										<Binding Path="Id"/>
 										<Binding Path="$parent[UserControl].DataContext.ExpandedId"/>
+									</MultiBinding>								
+							</StackPanel.Height>							
+							<StackPanel>
+								<TextBox Text="{Binding $parent[UserControl].DataContext.ExpandedLogin}"
+										 IsVisible="{Binding $parent[UserControl].DataContext.ExpandedLogin}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+										 IsHitTestVisible="{Binding	$parent[UserControl].DataContext.IsEditing}"/>
+								<TextBox Text="{Binding $parent[UserControl].DataContext.ExpandedPass}"
+										 IsHitTestVisible="{Binding	$parent[UserControl].DataContext.IsEditing}"
+										 PasswordChar="•"/>
+							</StackPanel>
+							<Button IsVisible="{Binding	!$parent[UserControl].DataContext.IsEditing}" 
+									Command="{Binding $parent[UserControl].DataContext.SwichEditingMode}">Edit</Button>
+							<Button IsVisible="{Binding	!$parent[UserControl].DataContext.IsEditing}"
+									Command="{Binding $parent[UserControl].DataContext.DeleteEntry}"
+									CommandParameter="{Binding $parent[UserControl].DataContext.ExpandedId}">Delete</Button>
+							<Button IsVisible="{Binding	$parent[UserControl].DataContext.IsEditing}"
+									Command="{Binding $parent[UserControl].DataContext.EditEntry}">
+								<Button.IsEnabled>
+									<MultiBinding Converter="{StaticResource SavePassEntryButtonEnableConverter}">
+										<Binding Path="$parent[UserControl].DataContext.ExpandedName"/>
+										<Binding Path="$parent[UserControl].DataContext.ExpandedPass"/>
 									</MultiBinding>
-							</StackPanel.Height>
-							<TextBox Text="{Binding $parent[UserControl].DataContext.ExpandedLogin}"
-									   IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-							<TextBox Text="{Binding	$parent[UserControl].DataContext.ExpandedPass}"
-									 PasswordChar="•"/>
+								</Button.IsEnabled>
+								Save
+							</Button>
+							<Button IsVisible="{Binding	$parent[UserControl].DataContext.IsEditing}" 
+									Command="{Binding $parent[UserControl].DataContext.CancelEditing}">Cancel</Button>
 						</StackPanel>
 					</Grid>
 				</DataTemplate>

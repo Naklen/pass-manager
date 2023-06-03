@@ -23,36 +23,6 @@ namespace pm.Services
             };
         }
 
-        public PassEntry[] GetAll() => db.ToArray();
-
-        public PassEntry[] AddEntry(string name, string pass, string? login)
-        {
-            var newEntryId = db.Last().Id + 1;
-            var newEntry = login == null ? new PassEntry(newEntryId, name, pass) : new PassEntry(newEntryId, name, pass, login);
-            db.Add(newEntry);
-            return db.ToArray();
-        }
-
-        public PassEntry[] ChangeEntry(int id, PassEntry newEntry) 
-        {
-            var entry = db.Find(e => e.Id == id);
-            if (entry != null)
-            {
-                entry.Name = newEntry.Name;
-                entry.Pass = newEntry.Pass;
-                entry.Login = newEntry.Login;
-            }
-            return db.ToArray();
-        }
-
-        public PassEntry[] RemoveEntry(int id) 
-        {
-            db.RemoveAll(e => e.Id == id);
-            return db.ToArray();
-        }
-
-        //--------------------
-
         public IEnumerable<PassEntryId> GetPassEntryIds()
         {
             return db.Select(e => new PassEntryId(e.Id, e.Name));
