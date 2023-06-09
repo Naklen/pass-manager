@@ -5,12 +5,12 @@
              mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="450"
              x:Class="pm.Views.NewEntryView">
 	<StackPanel>
-		<TextBox Watermark="Name"></TextBox>
-		<TextBox Watermark="Password"></TextBox>
-		<TextBox Watermark="Login"></TextBox>
+		<TextBox Text="{Binding	Name}" Watermark="Name"></TextBox>
+		<TextBox Text="{Binding	Pass}" Watermark="Password"></TextBox>
+		<TextBox Text="{Binding	Login}" Watermark="Login"></TextBox>
 		<StackPanel Orientation="Horizontal">
-			<Button>Save</Button>
-			<Button>Cancel</Button>
+			<Button Command="{Binding Add}">Add</Button>
+			<Button Command="{Binding Cancel}">Cancel</Button>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

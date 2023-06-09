@@ -66,7 +66,7 @@ namespace pm.ViewModels
             IsEditing = !IsEditing;
         }
 
-        void UpdateEntriesList()
+        public void UpdateEntriesList()
         {
             Entries = new ObservableCollection<PassEntryId>(_dbServise.GetPassEntryIds());
         }

@@ -1,6 +1,7 @@
 ﻿using pm.Models;
 using pm.Services;
 using ReactiveUI;
+using System;
 using System.Drawing;
 using System.Reactive.Linq;
 
@@ -9,9 +10,11 @@ namespace pm.ViewModels;
 public class MainWindowViewModel : ViewModelBase
 {
     ViewModelBase _content;
-    public MainWindowViewModel(ArrayDatabaseService dbService)
+    IDatabaseService _dbService;
+    public MainWindowViewModel(IDatabaseService dbService)
     {
-        Content = List = new PassListViewModel(dbService);
+        _dbService = dbService;
+        Content = List = new PassListViewModel(_dbService);
     }
     public ViewModelBase Content
     {
@@ -23,9 +26,9 @@ public class MainWindowViewModel : ViewModelBase
 
     public void AddNewEntry()
     {
-        var vm = new NewEntryViewModel();
+        var vm = new NewEntryViewModel(_dbService);
 
-        Observable.Merge(vm.Cancel).Take(1).Subscribe(() => { Content = List; });
+        Observable.Merge(vm.Add, vm.Cancel).Take(1).Subscribe(_ => { List.UpdateEntriesList(); Content = List; });        
 
         Content = vm;        
     }
