@@ -11,6 +11,8 @@
         Title="Pass Manager"		
         MinWidth="700" MinHeight="450"        
         Width="700" Height="450"
-		Content="{Binding Content}">  
-
+		Content="{Binding Content}"> 
+    <Window.Styles> 
+        <StyleInclude Source="/Styles/Styles.xaml"/>
+    </Window.Styles>
 </Window>

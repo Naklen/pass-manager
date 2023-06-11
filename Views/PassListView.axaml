@@ -15,7 +15,7 @@
 			+ Add new entry
 		</Button>
 		<ListBox Items="{Binding Entries}">
-			<ListBox.Styles>
+			<!-- <ListBox.Styles>
 				<Style Selector="ListBoxItem">
 					<Setter Property="Padding" Value="0"/>					
 				</Style>
@@ -25,12 +25,12 @@
 				<Style Selector="ListBoxItem:pointerover > ContentPresenter">
 					<Setter Property="Background" Value="Transparent"/>					
 				</Style>
-			</ListBox.Styles>
+			</ListBox.Styles> -->
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid RowDefinitions="Auto,Auto">					
 						<StackPanel Grid.Row="0" Orientation="Horizontal">
-							<Label Content="{Binding Name}"/>
+							<TextBlock Text="{Binding Name}"/>
 							<Button Command="{Binding $parent[UserControl].DataContext.CopyPassToClipboard}"
 									CommandParameter="{Binding Id}">
 								Copy Pass
