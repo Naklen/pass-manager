@@ -1,16 +1,11 @@
-﻿using DynamicData.Binding;
-using pm.Models;
+﻿using pm.Models;
+using pm.Services;
 using ReactiveUI;
-using TextCopy;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using pm.Services;
+using TextCopy;
 
 namespace pm.ViewModels
 {
@@ -22,11 +17,11 @@ namespace pm.ViewModels
         string? _expandedName;
         public string? ExpandedName { get => _expandedName; set => this.RaiseAndSetIfChanged(ref _expandedName, value); }
         string? _expandedLogin;
-        public string? ExpandedLogin { get => _expandedLogin; set => this.RaiseAndSetIfChanged(ref _expandedLogin, value); }         
+        public string? ExpandedLogin { get => _expandedLogin; set => this.RaiseAndSetIfChanged(ref _expandedLogin, value); }
         int _expandedId;
         public int ExpandedId { get => _expandedId; set => this.RaiseAndSetIfChanged(ref _expandedId, value); }
         bool _isEditing;
-        public bool IsEditing { get => _isEditing; set => this.RaiseAndSetIfChanged(ref _isEditing, value); }       
+        public bool IsEditing { get => _isEditing; set => this.RaiseAndSetIfChanged(ref _isEditing, value); }
 
         public PassListViewModel(IDatabaseService databaseService)
         {
@@ -34,12 +29,14 @@ namespace pm.ViewModels
             Entries = new ObservableCollection<PassEntryId>(_dbServise.GetPassEntryIds());
             _expandedId = -1;
             ExpandOrCollapseEntry = ReactiveCommand.Create<int>(SetExpandedEntry);
-            _isEditing = false;         
+            CopyPassToClipboard = ReactiveCommand.Create<int>(async id => { await CopyToClipboard(_dbServise.GetPassEntry(id).Pass); });
+            _isEditing = false;
         }
 
         public ObservableCollection<PassEntryId> Entries { get; private set; }
-        
+
         public ReactiveCommand<int, Unit> ExpandOrCollapseEntry { get; }
+        public ReactiveCommand<int, Unit> CopyPassToClipboard { get; }
 
         void SetExpandedEntry(int id)
         {
@@ -71,14 +68,9 @@ namespace pm.ViewModels
             Entries = new ObservableCollection<PassEntryId>(_dbServise.GetPassEntryIds());
         }
 
-        public static async void CopyToClipboard(string text) 
+        public static async Task CopyToClipboard(string text)
         {
             await ClipboardService.SetTextAsync(text);
-        }
-
-        public void CopyPassToClipboard(int id)
-        {
-            CopyToClipboard(_dbServise.GetPassEntry(id).Pass);
         }
 
         public void DeleteEntry(int id)
@@ -99,7 +91,7 @@ namespace pm.ViewModels
                 if (newName is not null)
                     Entries.First(e => e.Id != ExpandedId).Name = newName;
                 SwichEditingMode();
-            }            
+            }
         }
 
         public void CancelEditing()

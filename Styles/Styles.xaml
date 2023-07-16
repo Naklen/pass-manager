@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=netstandard">
     <Style Selector="Window">
-        <Setter Property="Background" Value="DarkSlateBlue"/>
+        <Setter Property="Background" Value="#1b3352"/>
     </Style>
     <Style Selector="ListBox">
         <Setter Property="Background" Value="Transparent"/>
@@ -20,7 +20,14 @@
         <Setter Property="Foreground" Value="LightGray"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
+	<Style Selector="Button /template/ ContentPresenter Svg">
+		<Setter Property="Stroke" Value="LightGray"/>
+		<Setter Property="Background" Value="Transparent"/>
+	</Style>
     <Style Selector="TextBlock">
         <Setter Property="Foreground" Value="LightGray"/>
     </Style>
+	<Style Selector="StackPanel.pass_entry__header">
+		<Setter Property="Height" Value="20"/>
+	</Style>
 </Styles>

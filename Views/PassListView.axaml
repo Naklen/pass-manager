@@ -14,7 +14,7 @@
 		<Button DockPanel.Dock="Top" Command="{Binding $parent[Window].DataContext.AddNewEntry}">
 			+ Add new entry
 		</Button>
-		<ListBox Items="{Binding Entries}">
+		<ListBox ItemsSource="{Binding Entries}">
 			<!-- <ListBox.Styles>
 				<Style Selector="ListBoxItem">
 					<Setter Property="Padding" Value="0"/>					
@@ -29,11 +29,11 @@
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<Grid RowDefinitions="Auto,Auto">					
-						<StackPanel Grid.Row="0" Orientation="Horizontal">
+						<StackPanel Grid.Row="0" Orientation="Horizontal" Classes="pass_entry__header">
 							<TextBlock Text="{Binding Name}"/>
 							<Button Command="{Binding $parent[UserControl].DataContext.CopyPassToClipboard}"
 									CommandParameter="{Binding Id}">
-								Copy Pass
+								<Svg Path="/Assets/copy-icon.svg"/>
 							</Button>
 							<!--Button IsVisible="{Binding Login, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
 									Command="{Binding $parent[UserControl].DataContext.CopyToClipboard}"
