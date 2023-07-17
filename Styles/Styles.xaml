@@ -20,10 +20,10 @@
         <Setter Property="Foreground" Value="LightGray"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
-	<Style Selector="Button /template/ ContentPresenter Svg">
+	<!--Style Selector="Button /template/ ContentPresenter Svg">
 		<Setter Property="Stroke" Value="LightGray"/>
 		<Setter Property="Background" Value="Transparent"/>
-	</Style>
+	</Style-->
     <Style Selector="TextBlock">
         <Setter Property="Foreground" Value="LightGray"/>
     </Style>
